@@ -1,5 +1,10 @@
 {
   "dependencies": {
-    "@netlify/identity": "^2.0.0"
+    "@netlify/database": "^2.0.1",
+    "@netlify/identity": "^2.0.0",
+    "drizzle-orm": "^1.0.0-beta.22"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^1.0.0-beta.22"
   }
 }
