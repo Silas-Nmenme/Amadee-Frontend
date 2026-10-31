@@ -12,7 +12,7 @@ import { setWhatsappNumber } from "./config.js";
 function init() {
   byId("year").textContent = String(new Date().getFullYear());
 
-  initCart();
+  initCart().catch(() => {});
   initProducts();
   initSearch();
   initReviews();

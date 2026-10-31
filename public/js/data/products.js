@@ -5,7 +5,7 @@ export const products = [
     "category": "children",
     "price": 18000,
     "images": [
-      "/public/assets/images/products/children/AS-001-purple-gown.jpeg"
+      "/assets/images/products/children/AS-001-purple-gown.jpeg"
     ],
     "sizes": [
       "XS",
@@ -30,7 +30,7 @@ export const products = [
     "category": "children",
     "price": 10000,
     "images": [
-      "/public/assets/images/products/children/CHILDREN CLOTHING 4.jpeg"
+      "/assets/images/products/children/CHILDREN CLOTHING 4.jpeg"
     ],
     "sizes": [
       "XS",
@@ -55,7 +55,7 @@ export const products = [
     "category": "children",
     "price": 15000,
     "images": [
-      "/public/assets/images/products/children/CHILDREN CLOTHING 3.jpeg"
+      "/assets/images/products/children/CHILDREN CLOTHING 3.jpeg"
     ],
     "sizes": [
       "XS",
@@ -80,7 +80,7 @@ export const products = [
     "category": "office",
     "price": 25000,
     "images": [
-      "/public/assets/images/products/office/product 20.jpeg"
+      "/assets/images/products/office/product 20.jpeg"
     ],
     "sizes": [
       "XS",
@@ -105,7 +105,7 @@ export const products = [
     "category": "office",
     "price": 35000,
     "images": [
-      "/public/assets/images/products/office/product 21.jpeg"
+      "/assets/images/products/office/product 21.jpeg"
     ],
     "sizes": [
       "XS",
@@ -130,7 +130,7 @@ export const products = [
     "category": "office",
     "price": 16000,
     "images": [
-      "/public/assets/images/products/casual/Smart Casual Shirt.avif"
+      "/assets/images/products/casual/Smart Casual Shirt.avif"
     ],
     "sizes": [
       "XS",
@@ -155,7 +155,7 @@ export const products = [
     "category": "ankara",
     "price": 28000,
     "images": [
-      "/public/assets/images/products/ankara/product 15.jpeg"
+      "/assets/images/products/ankara/product 15.jpeg"
     ],
     "sizes": [
       "XS",
@@ -180,7 +180,7 @@ export const products = [
     "category": "ankara",
     "price": 32000,
     "images": [
-      "/public/assets/images/products/ankara/Ankara Two-Piece.webp"
+      "/assets/images/products/ankara/Ankara Two-Piece.webp"
     ],
     "sizes": [
       "XS",
@@ -205,7 +205,7 @@ export const products = [
     "category": "ankara",
     "price": 40000,
     "images": [
-      "/public/assets/images/products/ankara/product 2.jpeg"
+      "/assets/images/products/ankara/product 2.jpeg"
     ],
     "sizes": [
       "XS",
@@ -230,7 +230,7 @@ export const products = [
     "category": "casual",
     "price": 20000,
     "images": [
-      "/public/assets/images/products/casual/Weekend Casual Set.webp"
+      "/assets/images/products/casual/Weekend Casual Set.webp"
     ],
     "sizes": [
       "XS",
@@ -255,7 +255,7 @@ export const products = [
     "category": "casual",
     "price": 9000,
     "images": [
-      "/public/assets/images/products/casual/product 4.webp"
+      "/assets/images/products/casual/product 4.webp"
     ],
     "sizes": [
       "XS",
@@ -280,7 +280,7 @@ export const products = [
     "category": "casual",
     "price": 14000,
     "images": [
-      "/public/assets/images/products/casual/Casual Trousers.webp"
+      "/assets/images/products/casual/Casual Trousers.webp"
     ],
     "sizes": [
       "XS",
