@@ -77,7 +77,7 @@ export function makeCard(p) {
   img.width = 800;
   img.height = 1000; // 4:5, matches the CSS aspect-ratio
   img.loading = "lazy";
-  img.onerror = () => { img.onerror = null; img.src = "/assets/images/products/garment-placeholder.svg"; };
+  img.onerror = () => { img.onerror = null; img.src = "/public/assets/images/products/garment-placeholder.svg"; };
 
   const content = document.createElement("div");
   content.className = "product-card-content";
