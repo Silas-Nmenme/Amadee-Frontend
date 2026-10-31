@@ -7,7 +7,7 @@ export async function initAuth() {
   try {
     const { getUser } = await loadIdentity();
     const user = await getUser();
-    if (user) button.textContent = 'My account';
+    if (user) { button.textContent = 'My account'; button.href = '/account.html'; }
   } catch {
     // The account link remains usable if the authentication service is unavailable.
   }

@@ -70,7 +70,7 @@ form.addEventListener('submit', async (event) => {
     } else if (page === 'signup') {
       const user = await identity.signup(data.get('email').trim(), data.get('password'), { full_name: data.get('name').trim() });
       form.reset();
-      if (user.emailVerified) showAccount('Your account is ready. Welcome to Amadee-Stiches.');
+      if (user.confirmedAt) showAccount('Your account is ready. Welcome to Amadee-Stiches.');
       else {
         form.hidden = true;
         message('Check your inbox for a confirmation link to finish creating your account. Check your spam folder too.');
