@@ -6,22 +6,10 @@ import { addToCart } from "./cart.js";
 import { openModal, closeModal } from "./modal.js";
 import { toast } from "./toast.js";
 
+import { getWishlist, initWishlist, toggleWishlist } from "./wishlist.js";
+
 let visibleLimit = 8;
 let searchQuery = "";
-
-const WISHLIST_KEY = "amadee-stiches-wishlist-v1";
-
-function getWishlist() {
-  try {
-    return JSON.parse(localStorage.getItem(WISHLIST_KEY) || "[]");
-  } catch {
-    return [];
-  }
-}
-
-function setWishlist(list) {
-  localStorage.setItem(WISHLIST_KEY, JSON.stringify(list));
-}
 
 // Called by search.js whenever the search box changes. Keeping the query
 // here (rather than scrolling or touching the category dropdown) means
@@ -79,7 +67,7 @@ export function renderProducts() {
   loadMore.textContent = `View more (${list.length - shown.length} remaining)`;
 }
 
-function makeCard(p) {
+export function makeCard(p) {
   const card = document.createElement("article");
   card.className = "product-card";
 
@@ -89,6 +77,7 @@ function makeCard(p) {
   img.width = 800;
   img.height = 1000; // 4:5, matches the CSS aspect-ratio
   img.loading = "lazy";
+  img.onerror = () => { img.onerror = null; img.src = "/assets/images/products/garment-placeholder.svg"; };
 
   const content = document.createElement("div");
   content.className = "product-card-content";
@@ -114,14 +103,21 @@ function makeCard(p) {
   heart.type = "button";
   heart.setAttribute("aria-pressed", String(getWishlist().includes(p.id)));
   heart.setAttribute("aria-label", `Save ${p.name} to wishlist`);
-  heart.onclick = () => {
-    let list = getWishlist();
-    const saved = list.includes(p.id);
-    list = saved ? list.filter((id) => id !== p.id) : [...list, p.id];
-    setWishlist(list);
-    heart.textContent = saved ? "♡" : "♥";
-    heart.setAttribute("aria-pressed", String(!saved));
-    toast(saved ? "Removed from wishlist." : "Saved to wishlist.");
+  const updateHeart = () => {
+    const saved = getWishlist().includes(p.id);
+    heart.textContent = saved ? "♥" : "♡";
+    heart.setAttribute("aria-pressed", String(saved));
+    heart.setAttribute("aria-label", `${saved ? "Remove" : "Save"} ${p.name} ${saved ? "from" : "to"} wishlist`);
+  };
+  updateHeart();
+  heart.onclick = async () => {
+    heart.disabled = true;
+    try {
+      const saved = await toggleWishlist(p.id);
+      updateHeart();
+      toast(saved ? "Saved to wishlist." : "Removed from wishlist.");
+    } catch (error) { toast(error.message, "error"); }
+    finally { heart.disabled = false; }
   };
 
   actions.append(details, add, heart);
@@ -203,7 +199,9 @@ function openProduct(p) {
       "p",
       "Need a custom fit? Choose “Custom” size and add measurements during checkout."
     );
-    info.append(sizeLabel, colourLabel, qtyLabel, customNote);
+    const guide = safeText("a", "How to measure →");
+    guide.href = "/size-guide.html";
+    info.append(sizeLabel, colourLabel, qtyLabel, customNote, guide);
 
     grid.append(img, info);
     modal.append(grid);
@@ -247,6 +245,7 @@ function openQuickAdd(p) {
 }
 
 export function initProducts() {
+  initWishlist().then(renderProducts).catch(() => {});
   byId("category-filter").addEventListener("change", () => {
     visibleLimit = 8;
     renderProducts();

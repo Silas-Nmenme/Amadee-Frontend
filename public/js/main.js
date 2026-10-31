@@ -5,9 +5,7 @@ import { initSearch } from "./modules/search.js";
 import { initReviews } from "./modules/reviews.js";
 import { initAuth } from "./modules/auth.js";
 import { byId } from "./modules/utils.js";
-import { api } from "./modules/utils.js";
-import { toast } from "./modules/toast.js";
-import { setWhatsappNumber } from "./config.js";
+import { initPublicForms } from "./modules/forms.js";
 
 function init() {
   byId("year").textContent = String(new Date().getFullYear());
@@ -17,20 +15,8 @@ function init() {
   initSearch();
   initReviews();
   initAuth();
-  loadServerConfig();
   initMobileNav();
-  initFooterForms();
-}
-
-// Pick up the confirmed WhatsApp number from the server once it answers.
-// Until then, every link uses the static fallback in config.js.
-async function loadServerConfig() {
-  try {
-    const config = await api("/config");
-    setWhatsappNumber(config.whatsapp);
-  } catch {
-    // Server unreachable: config.js fallback stays in effect.
-  }
+  initPublicForms();
 }
 
 function initMobileNav() {
@@ -47,30 +33,9 @@ function initMobileNav() {
     link.addEventListener("click", () => {
       nav.classList.remove("is-open");
       menu.setAttribute("aria-expanded", "false");
+      menu.setAttribute("aria-label", "Open navigation");
     })
   );
-}
-
-function initFooterForms() {
-  const forms = [
-    ["contact-form", "/contact", "Message sent."],
-    ["newsletter-form", "/newsletter", "You're subscribed."],
-  ];
-
-  forms.forEach(([formId, path, successMessage]) => {
-    byId(formId).addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const form = e.currentTarget;
-      const data = Object.fromEntries(new FormData(form));
-      try {
-        await api(path, { method: "POST", body: JSON.stringify(data) });
-        form.reset();
-        toast(successMessage);
-      } catch (err) {
-        toast(err.message, "error");
-      }
-    });
-  });
 }
 
 document.addEventListener("DOMContentLoaded", init);

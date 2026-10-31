@@ -1,7 +1,7 @@
 export const formatNaira = amount => new Intl.NumberFormat("en-NG",{style:"currency",currency:"NGN",maximumFractionDigits:0}).format(Number(amount)||0);
 export const escapeText = value => String(value ?? "");
 export async function api(path, options={}) {
-  const response = await fetch(`${window.AMADEE_API_URL || "http://localhost:3000/api"}${path}`, {
+  const response = await fetch(`${window.AMADEE_API_URL || "/api"}${path}`, {
     credentials:"include", headers:{"Content-Type":"application/json",...(options.headers||{})}, ...options
   });
   const data = await response.json().catch(()=>({message:"Unexpected server response"}));

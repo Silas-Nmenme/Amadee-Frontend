@@ -8,7 +8,7 @@ export function openModal(title, contentBuilder, options={}) {
  const heading=document.createElement("h2");heading.textContent=title;modal.append(close,heading);contentBuilder(modal);
  backdrop.append(modal);backdrop.addEventListener("click",e=>{if(e.target===backdrop)closeModal()});
  root.append(backdrop);document.body.style.overflow="hidden";modal.focus();
- const onKey=e=>{if(e.key==="Escape")closeModal();if(e.key==="Tab"){const focus=[...modal.querySelectorAll('button,a,input,select,textarea,[tabindex]:not([tabindex="-1"])')].filter(x=>!x.disabled);if(!focus.length){e.preventDefault();return}const first=focus[0],last=focus[focus.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}}};
+ const onKey=e=>{if(e.key==="Escape")closeModal();if(e.key==="Tab"){const focus=[...modal.querySelectorAll('button,a,input,select,textarea,[tabindex]:not([tabindex="-1"])')].filter(x=>!x.disabled);if(!focus.length){e.preventDefault();return}const first=focus[0],last=focus[focus.length-1];if(e.shiftKey&&(document.activeElement===first||document.activeElement===modal)){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}}};
  document.addEventListener("keydown",onKey);backdrop.dataset.keyListener="attached";
  backdrop._cleanup=()=>document.removeEventListener("keydown",onKey);
  return modal;
