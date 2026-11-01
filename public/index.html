@@ -83,8 +83,7 @@
     </section>
     <section id="contact" class="section section-narrow">
       <p class="eyebrow">We’re here to help</p><h2>Contact Amadee-Stiches</h2>
-      <form name="contact" method="POST" action="/thank-you" data-netlify="true" netlify-honeypot="website" id="contact-form" class="form-card">
-        <input type="hidden" name="form-name" value="contact">
+      <form name="contact" id="contact-form" class="form-card">
         <p class="form-status" role="status" aria-live="polite"></p>
         <label for="contact-name">Name</label><input id="contact-name" name="name" required maxlength="80">
         <label for="contact-email">Email</label><input id="contact-email" name="email" type="email" required maxlength="254">
@@ -92,8 +91,7 @@
         <label class="honeypot" aria-hidden="true">Leave this empty<input name="website" tabindex="-1" autocomplete="off"></label>
         <button class="button" type="submit">Send message</button>
       </form>
-      <form name="newsletter" method="POST" action="/thank-you" data-netlify="true" netlify-honeypot="website" id="newsletter-form" class="newsletter-form">
-        <input type="hidden" name="form-name" value="newsletter">
+      <form name="newsletter" id="newsletter-form" class="newsletter-form">
         <p class="form-status" role="status" aria-live="polite"></p>
         <label for="newsletter-email">Get collection updates</label><div class="inline-form"><input id="newsletter-email" name="email" type="email" placeholder="Your email address" required><button class="button" type="submit">Subscribe</button></div>
         <label class="honeypot" aria-hidden="true">Leave this empty<input name="website" tabindex="-1" autocomplete="off"></label>

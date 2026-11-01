@@ -2,15 +2,28 @@ import { products } from '../data/products.js';
 import { byId, formatNaira } from './utils.js';
 import { toast } from './toast.js';
 import { getWhatsappNumber } from '../config.js';
+const storageKey = 'amadee-stiches-cart-v1';
 let cart = [];
 let queue = Promise.resolve();
 let loaded = false;
 
-async function request(options) {
-  const response = await fetch('/api/cart', { credentials: 'same-origin', ...options });
-  const data = await response.json();
-  if (!response.ok) throw new Error(data.message || 'Your cart is unavailable. Please try again.');
-  return data.items;
+function readCart() {
+  const saved = JSON.parse(localStorage.getItem(storageKey) || '[]');
+  if (!Array.isArray(saved)) throw new Error('Your saved cart is invalid. Please clear it and try again.');
+  return saved.filter(item => {
+    const product = products.find(candidate => candidate.id === item?.id);
+    return product?.inStock &&
+      product.sizes.includes(item.size) &&
+      product.colours.includes(item.colour) &&
+      Number.isInteger(item.quantity) &&
+      item.quantity >= 1 &&
+      item.quantity <= 20;
+  });
+}
+function saveCart(items) {
+  localStorage.setItem(storageKey, JSON.stringify(items));
+  cart = items;
+  notify();
 }
 function notify() {
   const count = cart.reduce((sum, x) => sum + x.quantity, 0);
@@ -18,20 +31,8 @@ function notify() {
   window.dispatchEvent(new CustomEvent('amadee:cart-change'));
 }
 export async function loadCart() {
-  cart = await request();
-  cart = cart.filter(x => products.some(p => p.id === x.id));
-  // Import carts saved by the earlier storefront only after server access succeeds.
-  try {
-    const legacy = JSON.parse(localStorage.getItem('amadee-stiches-cart-v1') || '[]');
-    if (!cart.length && Array.isArray(legacy) && legacy.length) {
-      const items = legacy.filter(x => {
-        const p = products.find(p => p.id === x?.id);
-        return p?.inStock && p.sizes.includes(x.size) && p.colours.includes(x.colour) && Number.isInteger(x.quantity) && x.quantity >= 1 && x.quantity <= 20;
-      });
-      if (items.length) cart = await request({ method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ items }) });
-    }
-    localStorage.removeItem('amadee-stiches-cart-v1');
-  } catch { /* An unavailable legacy store must not block the saved server cart. */ }
+  cart = readCart();
+  localStorage.setItem(storageKey, JSON.stringify(cart));
   loaded = true;
   notify();
 }
@@ -40,8 +41,7 @@ function mutate(change) {
     if (!loaded) await loadCart();
     const next = cart.map(x => ({ ...x }));
     change(next);
-    cart = await request({ method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ items: next }) });
-    notify();
+    saveCart(next);
   });
   return queue.catch(err => { toast(err.message, 'error'); throw err; });
 }
